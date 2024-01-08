@@ -1,0 +1,4 @@
+El método seguido por la OKH es el siguiente:
+
+- Si el mensaje incluye primero el cargo y después el nombre del destinatario, el mensaje es válido.
+- Si el mensaje incluye primero el nombre y después el cargo el mensaje debe ignorarse, pues está enviado para despistar

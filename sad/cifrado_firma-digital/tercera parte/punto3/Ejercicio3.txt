@@ -1,0 +1,53 @@
+#Punto 1:
+
+He descargado los 4 ficheros que indica y he ejecutado los siguientes comandos para comprobar cual es el mensje original:
+
+gpg --verify mensaje.txt.asc mensaje1.txt
+gpg --verify mensaje.txt.asc mensaje2.txt
+gpg --verify mensaje.txt.asc mensaje3.txt
+
+Cuando he comprobado cual es el correcto he copiado el contendo de este en un fichero a parte junto con otro archivo con el mensaje cifrado
+
+#Punto 2:
+
+He descargado los mismos ficheros y tambien los .asc, he ejecutado el comando para comprobar cual es el mensaje que no se ha cambiado:
+
+gpg --verify mensaje.txt1.asc
+gpg --verify mensaje.txt2.asc
+gpg --verify mensaje.txt3.asc
+
+Cuando he comprobado el archivo que no ha cambiado el mensaje, he copiado el contenido en otro archivo y he firmado este archivo
+
+#Punto 3:
+
+He firmado la clave del profesor con:
+
+gpg --sign-key javi
+
+Y para descifrar el fichero que ha pasado javi:
+
+gpg --output pito.txt --decrypt vmm.txt.asc
+gpg --output ciudad.txt --decrypt pito.txt
+
+###########################################################################################3
+
+Mensaje para mi profesor favorito:
+
+## COMO HACER UNA TARTA DE QUESO ##
+
+1. Elegimos el molde que más os guste, en este caso me he decidido por un molde desmoldable redondo de 20 cm por 20 cm. Lo engrasamos con la mantequilla y ponemos papel para vegetal o para hornear tal como veis en las fotos y el vídeo. El hecho de forrarlo con papel nos permitirá desmoldar la tarta sin ningún problema. Reservamos.
+
+2. Precalentamos el horno a 200º C, calor arriba y abajo.
+
+3. En un bol añadimos todos los ingredientes, el queso crema, la nata, los dos huevos, el azúcar y, por último la harina. Es necesario que el queso crema esté a temperatura ambiente para poder trabajarlo. Ya que si lo añadimos directamente del frigo, estará demasiado duro para poder integrarlo con el resto de ingredientes.
+
+4. Podemos batir bien con unas varillas o incluso emplear una batidora de mano. Con la batidora nos aseguraremos de que los grumos se eliminen totalmente, pero en realidad es conveniente no batir en exceso la mezcla. Vertemos la mezcla en el molde forrado y lo introducimos en el horno previamente calentado a 200º C.
+
+
+## Horneado de la tarta de queso y presentación final ##
+
+1. Horneamos la tarta de queso durante unos 45 minutos aproximadamente a 200º C. y la colocamos en la bandeja en el medio del horno. Temperatura arriba y abajo, con aire. Comprobamos que esté en su punto pinchándola con un palito. Si este sale limpio estará lista.
+
+2. Retiramos el molde del horno y dejamos que se temple sobre una rejilla, sin desmoldar. Desmoldamos la tarta, esperamos a que esté totalmente fría y la guardamos en el frigo hasta su consumo. Estará mucho más rica al día siguiente cuando haya estado unas horas en la nevera. No olvidéis servirla acompañada de mermelada de frambuesa o vuestra compota preferida.
+
+3. Se trata de una tarta dulce y sabrosa, perfecta para un postre o una merienda de rechupete.

@@ -1,0 +1,12 @@
+/home/viktor/.gnupg/pubring.kbx
+-------------------------------
+pub   rsa3072 2023-10-04 [SC] [expires: 2025-10-03]
+      CF307DFD15C68107995C630E9592A69E24154E9A
+uid           [ultimate] viktor <nosehaha@gmail.com>
+sub   rsa3072 2023-10-04 [E] [expires: 2025-10-03]
+
+pub   rsa3072 2023-10-01 [SC] [expires: 2025-09-30]
+      BCC8F3A07795C9B49233E7CCA908FF1B3259EEE9
+uid           [ unknown] Javi Daroqui <fj.daroquimarti@edu.gva.es>
+sub   rsa3072 2023-10-01 [E] [expires: 2025-09-30]
+

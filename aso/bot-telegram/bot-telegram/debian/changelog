@@ -1,0 +1,17 @@
+bot-telegram (0.1ubuntu3) UNRELEASED; urgency=medium
+
+  * a
+  * nose nose
+  * arreglando cosas 
+  * añadiendo archivos 
+  * cambiando nombres 
+  * arreglando nombres y cambiando cosas 
+  * Arreglando el tema de los binarios y corrigiendo nombres
+
+ -- Viktor <viktor@HP-Viktor-PC>  Sun, 19 Nov 2023 12:27:38 +0100
+
+bot-telegram (0.01) UNRELEASED; urgency=medium
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Viktor <viktor@HP-Viktor-PC>  Tue, 07 Nov 2023 14:16:26 +0100

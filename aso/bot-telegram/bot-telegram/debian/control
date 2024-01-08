@@ -1,0 +1,15 @@
+Source: bot-telegram
+Section: utils
+Priority: optional
+Maintainer: Nokia2k AKA viktor AKA niño scripting AKA victor AKA tu fav <vicmarmartinezmartinez@gmail.com>
+Build-Depends: debhelper (>=12), unzip
+Standards-Version: 4.5.0
+
+Package: bot-telegram
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}, python3-nmap, python3-netifaces, python3-psutil, python3-python-telegram-bot
+Pre-Depends: python3-pip
+Description: El servicio del mejor bot del mundo 
+ Ejemplo de servicio empaquetado 
+ por la mejor clase del mundo,
+ que es ASIR 2. 

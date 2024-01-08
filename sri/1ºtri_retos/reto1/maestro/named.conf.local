@@ -1,0 +1,23 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "victor.com" {
+	type master;
+	file "/etc/bind/zonas/db.victor.com";
+	allow-transfer {56.23.45.10;};
+};
+
+zone "valencia.victor.com" {
+	type master;
+	file "/etc/bind/zonas/db.valencia.victor.com";
+};
+
+zone "caceres.victor.com" {
+	type master;
+	file "/etc/bind/zonas/db.caceres.victor.com";
+};

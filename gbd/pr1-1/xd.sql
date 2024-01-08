@@ -1,0 +1,363 @@
+-----------------------------------------------------------------------------------------------------
+PASO PREVIO:
+En las dos bases de datos:
+alter session set "_ORACLE_SCRIPT"=true;
+-----------------------------------------------------------------------------------------------------
+CREAR LOS TABLESPACES:
+DBGANADERA:
+CREATE TABLESPACE ts_dietaganadera
+    DATAFILE 'C:\app\viktor\product\21c\ts_dietaganadera.dbf'
+    size 50 M
+    AUTOEXTEND ON NEXT 10 M
+    maxsize 1G;
+
+DBHOSPITAL:
+CREATE TABLESPACE ts_dbhospital
+    DATAFILE 'C:\app\viktor\product\21c\ts_dietaganadera.dbf'
+    size 50 M
+    AUTOEXTEND ON NEXT 10 M
+    maxsize 1G;
+-----------------------------------------------------------------------------------------------------
+CREAR LOS USUARIOS:
+DBGANADERA:
+CREATE USER admin_ganadera identified by 1234 DEFAULT TABLESPACE ts_dietaganadera;
+GRANT CREATE TABLE to admin_ganadera;
+GRANT connect, SELECT, INSERT, CREATE SESSION, resource TO admin_ganadera;
+GRANT CREATE ANY VIEW TO admin_ganadera WITH ADMIN OPTION;
+
+DBHOSPITAL:
+CREATE USER admin_hospital identified by 1234 DEFAULT TABLESPACE ts_dbhospital;
+GRANT CREATE TABLE to admin_hospital;
+GRANT dba, connect, resource TO admin_hospital;
+GRANT CREATE ANY VIEW TO admin_hospital WITH ADMIN OPTION;
+-----------------------------------------------------------------------------------------------------
+CREAR LAS TABLAS
+DBGANADERA:
+
+CREATE TABLE T_ALIMENTO (
+
+	NOMBRE_ALIMENTO VARCHAR2(20 BYTE), 
+	TIPO_ALIMENTO VARCHAR2(20 BYTE), 
+	COSTE NUMBER(6,2), 
+	OD_ALIMENTO VARCHAR2(40 BYTE), 
+	CALORIAS NUMBER(6,2),
+	CONSTRAINT pk_nombre_alimento PRIMARY KEY(NOMBRE_ALIMENTO)
+
+) 
+TABLESPACE ts_dietaganadera;
+
+
+CREATE TABLE T_ANIMAL (
+
+	COD_ANIMAL NUMBER, 
+	TIPO_ANIMAL VARCHAR2(20 BYTE), 
+	PESO NUMBER, 
+	F_NACIMIENTO DATE, 
+	UTILIDAD_ANIMAL VARCHAR2(20 BYTE), 
+	PRODUCCION_ANIMAL VARCHAR2(20 BYTE), 
+	OD_ANIMAL VARCHAR2(40 BYTE),
+	CONSTRAINT pk_animal PRIMARY KEY(COD_ANIMAL)	
+)
+TABLESPACE ts_dietaganadera;
+
+
+CREATE TABLE T_TOMA (
+
+	COD_TOMA NUMBER, 
+	NOMBRE_TOMA VARCHAR2(30 BYTE), 
+	HORA_INICIO NUMBER, 
+	HORA_FIN NUMBER, 
+	OD_TOMA VARCHAR2(40 BYTE),
+	CONSTRAINT pk_toma PRIMARY KEY(COD_TOMA)
+)
+TABLESPACE ts_dietaganadera;
+
+
+CREATE TABLE T_DIETA (
+
+	COD_DIETA NUMBER, 
+	FINALIDAD VARCHAR2(20 BYTE), 
+	OD_DIETA VARCHAR2(40 BYTE),
+	CONSTRAINT pk_dieta PRIMARY KEY(COD_DIETA)
+)
+TABLESPACE ts_dietaganadera;
+
+
+CREATE TABLE T_NUTRIENTE (
+
+	NOMBRE_NUTRIENTE VARCHAR2(30 BYTE), 
+	MAGNITUD_NUTRIENTE VARCHAR2(20 BYTE), 
+	ESTADO VARCHAR2(20 BYTE), 
+	OD_NUTRIENTE VARCHAR2(40 BYTE),
+	CONSTRAINT pk_nutriente PRIMARY KEY(NOMBRE_NUTRIENTE)
+)
+TABLESPACE ts_dietaganadera;
+
+
+CREATE TABLE T_ANIMAL_NUTRIENTE (
+
+	COD_ANIMAL NUMBER,
+	NOMBRE_NUTRIENTE VARCHAR2(30 BYTE),
+	CANTIDAD_NECESARIA NUMBER,
+	CONSTRAINT pk_animal_nutriente PRIMARY KEY (COD_ANIMAL, NOMBRE_NUTRIENTE),
+	CONSTRAINT fk_aninum_animal FOREIGN KEY (COD_ANIMAL) REFERENCES T_ANIMAL (COD_ANIMAL),
+	CONSTRAINT fk_aninum_nutriente FOREIGN KEY (NOMBRE_NUTRIENTE) REFERENCES T_NUTRIENTE (NOMBRE_NUTRIENTE)
+)
+TABLESPACE ts_dietaganadera;
+
+
+CREATE TABLE T_DIETA_ANIMAL_FECHA_INICIO (
+
+	COD_ANIMAL NUMBER,
+	FECHA_INICIO DATE,
+	COD_DIETA NUMBER,
+	OD_RESULTADO VARCHAR2(40 BYTE),
+	PRIMARY KEY (COD_ANIMAL, FECHA_INICIO),
+	FOREIGN KEY (COD_ANIMAL) REFERENCES T_ANIMAL (COD_ANIMAL),
+	FOREIGN KEY (COD_DIETA) REFERENCES T_DIETA (COD_DIETA)
+)
+TABLESPACE ts_dietaganadera;
+
+
+CREATE TABLE T_NUTRIENTE_ALIMENTO (
+
+	NOMBRE_NUTRIENTE VARCHAR2(30 BYTE),
+	NOMBRE_ALIMENTO VARCHAR2(20 BYTE),
+	CANTIDAD_CONTENIDA NUMBER,
+	PRIMARY KEY (NOMBRE_NUTRIENTE, NOMBRE_ALIMENTO),
+	FOREIGN KEY (NOMBRE_NUTRIENTE) REFERENCES T_NUTRIENTE (NOMBRE_NUTRIENTE),
+	FOREIGN KEY (NOMBRE_ALIMENTO) REFERENCES T_ALIMENTO (NOMBRE_ALIMENTO)
+)
+TABLESPACE ts_dietaganadera;
+
+
+CREATE TABLE T_ALIMENTO_DIETA_TOMA (	
+
+	COD_DIETA NUMBER,
+	NOMBRE_ALIMENTO VARCHAR2(20 BYTE),
+	COD_TOMA NUMBER,
+	CANTIDAD_TOMA NUMBER,
+	CONSTRAINT pk_alimento_dieta_toma PRIMARY KEY (COD_DIETA, NOMBRE_ALIMENTO, COD_TOMA),
+	CONSTRAINT fk_alidt_dieta FOREIGN KEY (COD_DIETA) REFERENCES T_DIETA (COD_DIETA),
+	CONSTRAINT fk_alidt_alim FOREIGN KEY (NOMBRE_ALIMENTO) REFERENCES T_ALIMENTO (NOMBRE_ALIMENTO),
+	CONSTRAINT fk_alidt_toma FOREIGN KEY (COD_TOMA) REFERENCES T_TOMA (COD_TOMA)
+)
+TABLESPACE ts_dietaganadera;
+
+DBHOSPITAL:
+
+-----------------------------------------------------------------------------------------------------
+CREAR LA INSERCION DE DATOS:
+DBGANADERA:
+
+TABLA ALIMENTOS:
+
+	INSERT INTO T_ALIMENTO (nombre_alimento, tipo_alimento, coste, od_alimento, calorias) VALUES
+	('alfalfa', 'alfalfa deshidratada', 0.15, 'normativa de calidad', 500.00);
+
+	INSERT INTO T_ALIMENTO (nombre_alimento, tipo_alimento, coste, od_alimento, calorias) VALUES
+	('algodon', 'semillas de algodon', 0.15, 'alto contenido en fibra', 500.00);
+
+	INSERT INTO T_ALIMENTO (nombre_alimento, tipo_alimento, coste, od_alimento, calorias) VALUES
+	('cebada', 'grano', 0.40, 'grano triturado', 100.00);
+
+	INSERT INTO T_ALIMENTO (nombre_alimento, tipo_alimento, coste, od_alimento, calorias) VALUES
+	('maiz', 'grano', 0.15, 'grano machacado', 500.00);
+
+	INSERT INTO T_ALIMENTO (nombre_alimento, tipo_alimento, coste, od_alimento, calorias) VALUES
+	('pienso', 'pienso', 0.15, 'mezcla de granos', 500.00);
+	
+	INSERT INTO T_ALIMENTO (nombre_alimento, tipo_alimento, coste, od_alimento, calorias) VALUES
+	('soja', 'grano', 0.50, 'grano entero', 250.00);
+
+	INSERT INTO T_ALIMENTO (nombre_alimento, tipo_alimento, coste, od_alimento, calorias) VALUES
+	('trigo', 'grano', 0.30, 'grano selecto', 300.00);
+
+TABLA ANIMAL: 
+
+	INSERT INTO T_ANIMAL (cod_animal, tipo_animal, peso, f_nacimiento, utilidad_animal, produccion_animal, od_animal) VALUES
+	(1, 'bovino', 900, TO_DATE('2012-03-02', 'YYYY-MM-DD'), 'carnica', 'carniceria', 'carne para carniceria');
+
+	INSERT INTO T_ANIMAL (cod_animal, tipo_animal, peso, f_nacimiento, utilidad_animal, produccion_animal, od_animal) VALUES
+	(2, 'bovino', 800, TO_DATE('2019-11-05', 'YYYY-MM-DD'), 'reproduccion', 'semental', 'toro reproductor');
+
+	INSERT INTO T_ANIMAL (cod_animal, tipo_animal, peso, f_nacimiento, utilidad_animal, produccion_animal, od_animal) VALUES
+	(3, 'bovino', 700, TO_DATE('2008-10-08', 'YYYY-MM-DD'), 'lactea', 'leche', 'leche entera');
+
+	INSERT INTO T_ANIMAL (cod_animal, tipo_animal, peso, f_nacimiento, utilidad_animal, produccion_animal, od_animal) VALUES
+	(5, 'bovino', 800, TO_DATE('2017-05-30', 'YYYY-MM-DD'), 'reproduccion', 'embarazo', 'vaca reproductora');
+
+	INSERT INTO T_ANIMAL (cod_animal, tipo_animal, peso, f_nacimiento, utilidad_animal, produccion_animal, od_animal) VALUES
+	(6, 'bovino', 800, TO_DATE('2012-09-21', 'YYYY-MM-DD'), 'lactea', 'queso', 'cabra para queso');
+
+	INSERT INTO T_ANIMAL (cod_animal, tipo_animal, peso, f_nacimiento, utilidad_animal, produccion_animal, od_animal) VALUES
+	(7, 'equido', 1000, TO_DATE('2015-02-11', 'YYYY-MM-DD'), 'carnica', 'carniceria', 'caballo para carne');
+
+TABLA DIETA:
+
+	INSERT INTO T_DIETA (cod_dieta, finalidad, od_dieta) VALUES
+	(1, 'engorde', 'cereales para engorde');
+
+	INSERT INTO T_DIETA (cod_dieta, finalidad, od_dieta) VALUES
+	(2, 'crecimiento', 'hormonas');
+
+	INSERT INTO T_DIETA (cod_dieta, finalidad, od_dieta) VALUES
+	(3, 'adelgazamiento', 'hierba');
+
+	INSERT INTO T_DIETA (cod_dieta, finalidad, od_dieta) VALUES
+	(4, 'mantenimiento', 'hierba con cereales');
+
+TABLA NUTRIENTE: 
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('calcio', 5, 'desactivo', 'suplemento');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('fibra', 15, 'activo', 'aporte del grano');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('fosforo', 3, 'desactivo', 'suplemento');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('hierro', 20, 'activo', 'aportación de la soja');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('potasio', 5, 'activo', 'aportación de la soja');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('proteina', 30, 'activo', 'origen vegetal');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('vitamina B1', 1, 'activo', 'aporte del grano');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('vitamina B5', 0.3, 'activo', 'aporte del grano');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES	
+	('vitamina B7', 0.1, 'activo', 'aporte del grano');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('vitamina B9', 0.2, 'activo', 'aporte del grano');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('vitamina E', 2, 'activo', 'aporte del grano');
+
+	INSERT INTO T_NUTRIENTE (nombre_nutriente, magnitud_nutriente, estado, od_nutriente) VALUES
+	('zinc', 3, 'activo', 'aportación de la soja');
+
+TABLA TOMA:
+
+	INSERT INTO T_TOMA (cod_toma, nombre_toma, hora_inicio, hora_fin, od_toma) VALUES
+	(1, 'matutina', 7, 8, NULL);
+
+	INSERT INTO T_TOMA (cod_toma, nombre_toma, hora_inicio, hora_fin, od_toma) VALUES
+	(2, 'mañana', 11, 12, NULL);
+
+	INSERT INTO T_TOMA (cod_toma, nombre_toma, hora_inicio, hora_fin, od_toma) VALUES
+	(3, 'mediodia', 13, 14, NULL);
+
+	INSERT INTO T_TOMA (cod_toma, nombre_toma, hora_inicio, hora_fin, od_toma) VALUES
+	(4, 'merienda', 17, 18, NULL);
+
+	INSERT INTO T_TOMA (cod_toma, nombre_toma, hora_inicio, hora_fin, od_toma) VALUES
+	(5, 'cena', 20, 21, NULL);
+
+
+TABLA T_ALIMENTO_DIETA_TOMA:
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(1, 'cebada', 1, 200);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(1, 'cebada', 3, 100);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(1, 'cebada', 5, 150);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(1, 'soja', 1, 200);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(1, 'soja', 3, 100);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(1, 'soja', 5, 150);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(2, 'cebada', 1, 200);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA(cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(2, 'cebada', 3, 100);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(2, 'cebada', 5, 150);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(2, 'soja', 1, 200);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(2, 'soja', 3, 100);
+
+	INSERT INTO T_ALIMENTO_DIETA_TOMA (cod_dieta, nombre_alimento, cod_toma, cantidad_toma) VALUES
+	(2, 'soja', 5, 150);
+
+TABLA T_ANIMAL_NUTRIENTE:
+
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (1, 'fibra', 500);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (1, 'hierro', 300);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (1, 'potasio', 250);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (1, 'proteina', 200);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (1, 'zinc', 5);
+
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (2, 'fibra', 500);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (2, 'hierro', 300);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (2, 'potasio', 250);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (2, 'proteina', 200);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (2, 'vitamina B1', 20);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (2, 'vitamina B5', 15);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (2, 'vitamina B9', 25);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (2, 'zinc', 5);
+
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (3, 'fibra', 500);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (3, 'hierro', 300);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (3, 'potasio', 250);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (3, 'proteina', 200);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (3, 'vitamina B1', 20);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (3, 'vitamina B5', 15);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (3, 'vitamina B7', 25);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (3, 'vitamina B9', 25);
+
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (5, 'calcio', 50);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (5, 'fibra', 500);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (5, 'hierro', 300);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (5, 'proteina', 200);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (5, 'vitamina B1', 20);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (5, 'vitamina B5', 50);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (5, 'vitamina B7', 250);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (5, 'vitamina B9', 30);
+
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (6, 'calcio', 50);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (6, 'fibra', 500);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (6, 'hierro', 300);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (6, 'potasio', 30);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (6, 'proteina', 200);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (6, 'vitamina B1', 20);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (6, 'vitamina B5', 50);
+INSERT INTO T_ANIMAL_NUTRIENTE (cod_animal, nombre_nutriente, cantidad_necesaria) VALUES (6, 'vitamina B7', 250);
+
+TABLA T_DIETA_ANIMAL_FECHA_INICIO:
+
+INSERT INTO T_DIETA_ANIMAL_FECHA_INICIO (cod_animal,fecha_inicio,cod_dieta) VALUES(1,'01-10-2021',1);
+INSERT INTO T_DIETA_ANIMAL_FECHA_INICIO (cod_animal,fecha_inicio,cod_dieta) VALUES(2,'09-01-2021',2);
+INSERT INTO T_DIETA_ANIMAL_FECHA_INICIO (cod_animal,fecha_inicio,cod_dieta) VALUES(3,'12-08-2020',4);
+INSERT INTO T_DIETA_ANIMAL_FECHA_INICIO (cod_animal,fecha_inicio,cod_dieta) VALUES(4,'20-02-2020',2); *NO VA A IR PORQUE EL ANIMAL 4 NO EXISTE
+INSERT INTO T_DIETA_ANIMAL_FECHA_INICIO (cod_animal,fecha_inicio,cod_dieta) VALUES(5,'05-07-2019',1);
+INSERT INTO T_DIETA_ANIMAL_FECHA_INICIO (cod_animal,fecha_inicio,cod_dieta) VALUES(6,'01-05-2020',4);
+
+TABLA T_NUTRIENTE_ALIMENTO:
+
+INSERT INTO T_NUTRIENTE_ALIMENTO(nombre_nutriente,nombre_alimento,cantidad_contenida) VALUES('potasio','alfalfa',300);
+INSERT INTO T_NUTRIENTE_ALIMENTO(nombre_nutriente,nombre_alimento,cantidad_contenida) VALUES('vitamina B1','maiz',50);
+INSERT INTO T_NUTRIENTE_ALIMENTO(nombre_nutriente,nombre_alimento,cantidad_contenida) VALUES('vitamina B5','trigo',150);
+INSERT INTO T_NUTRIENTE_ALIMENTO(nombre_nutriente,nombre_alimento,cantidad_contenida) VALUES('potasio','pienso',30);
+INSERT INTO T_NUTRIENTE_ALIMENTO(nombre_nutriente,nombre_alimento,cantidad_contenida) VALUES('fosforo','pienso',30);

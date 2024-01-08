@@ -1,0 +1,11 @@
+[Unit]
+Description=Servicio del bot de telegram
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=/usr/bin/bot-telegram.py
+Restart=always
+RestartSec=1
+Type=simple
+User=bot-telegram

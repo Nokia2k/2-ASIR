@@ -1,0 +1,33 @@
+#!/bin/bash
+
+usuario="bot-telegram"
+
+if id "$usuario" &>/dev/null; then
+  echo " * The user $usuario already exists..."
+else
+  adduser --disabled-password --gecos "" $usuario 
+  chmod +x /usr/bin/bot-telegram.py
+fi
+
+echo " * Installing packages..."
+pip3 install --upgrade python-telegram-bot
+pip3 install python-nmap
+pip3 install ping3
+pip3 install --upgrade ping3
+
+## PARA SETUIDEAR los comandos de los servicios ##
+
+echo " * Installing binaries..."
+for i in iniciar parar; do
+
+  gcc /usr/bin/$i.c -o /usr/bin/$i -Wnonnull &>/dev/null
+  chown root /usr/bin/$i
+  chmod 4755 /usr/bin/$i
+  rm /usr/bin/$i.c
+
+done
+
+echo " * Restarting systemctl..."
+systemctl restart bot-telegram.service
+
+exit 0

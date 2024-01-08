@@ -1,0 +1,50 @@
+Paso 1:
+
+Primero tendremos que instalar el paquete build-essential para poder compilar las bibliotecas y tambien hay que instalar el paquete automake para poder usar el makefile
+
+Paso 2:
+del repositorio de github: https://github.com/kernc/logkeys/ y descargaremos el master.zip
+
+Paso 3:
+Descomprimiremos el paquete y dentro del directorio que hayamos comprimido ejecutaremos una serie de comandos:
+	
+	-> $ ./autogen.sh
+	-> $ cd nuild
+	-> $ ../configure
+	-> $ make
+	-> $ sudo make install
+	-> $ sudo locale-gen
+
+Paso 4:
+Primero crearemos un archivo .log donde se guarden todo lo que el keylog haregistrado:
+	-> $ touch keylog.log
+
+Paso 5: 
+Ejecutaremos el siguiente comando para que el keylog empieze a detectar lasentradas del teclado:
+
+	-> $ sudo logkeys --start --output logkeys.log
+
+Paso 6:
+Si observamos el contenido del .log veremoms que aparecen una serie de letras y numero que no tienen sentido, esto de debe a que la distribucion que el keylog usa no es la misma que nuestro teclado, para esto debemos conocer cual usamos y indicarselo al keylog:
+
+	-> $ sudo logkeys -k
+	-> $ sudo logkeys --start --output logkeys.log -s -m es_ES.map
+
+Enunciado 1:
+
+Primero mediante el comando ps observamos en este caso que el proceso de logkeys esta iniciado:
+
+	-> $ ps aux | grep logkeys
+
+A veces un keylogger se ejecuta como una tarea programada, si es asi, observariamos el crontab de la siguiente manera:
+
+	-> $ contrab -l
+
+Otra manera seria investigar en los archivos de inicio y de servicios si hay un archivo de caracter sospechoso, algunas carpetas donde podrias buscar son:
+
+	-> /etc/init.d
+	-> /etc/systemd/system
+	-> /etc/rc.d	
+
+Enunciado 2: 
+Si probamos a cambiar de usuario sin terminar el proceso podremos observar que el proceso se detendra automaticamente y ya no se registraran las teclas que el nuevo usuario pulse, si quisieramos que se registraran tendriamos que volver a iniciar el proceso
