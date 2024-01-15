@@ -1,0 +1,4 @@
+acl red_empresa src 192.168.100.0/22
+acl servidores src 192.168.103.0/24
+acl direccion src 192.168.101.1-192.168.101.20
+acl dep_informatica src 192.168.101.31-192.168.102.50
