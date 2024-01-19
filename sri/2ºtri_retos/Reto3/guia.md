@@ -54,13 +54,13 @@ Una vez hecho esto lo ultimo que queda es conectarse por medio de nuestro explor
 
 Rellenamos con las caracteristicas del servidor:
 
-![alt](./img/2.png)
+![alt](./img/1.png)
 
 Y podemos obrservar que podemos crear archivos y carpetas:
 
-![alt](./img/3.png)
+![alt](./img/1.png)
 
 Y si observamos en el servidor vemos que efectivamente se han creado:
 
-![alt](./img/4.png)
+![alt](./img/1.png)
 
