@@ -1,0 +1,12 @@
+#!/bin/bash
+
+file=(/etc/passwd)
+while read line ; do
+
+  id=$(echo $line | cut -d ":" -f3) 
+  #if [ $id -gt 1005 -a $id -lt 5000 ]; then
+  if [ $id = 1000 ]; then
+    exit 1	 
+  fi
+
+done < "$file"
