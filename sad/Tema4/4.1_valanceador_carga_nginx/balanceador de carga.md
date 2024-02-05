@@ -1,12 +1,13 @@
 # Reto4
 *Victor Martinez Martinez*
 
-Servidor Streaming (Con servidores nginx y un mikrotik)
+Balanceador de carga (Con servidores nginx y un mikrotik)
 ---
 
 ## Paso 1
 **Creamos la estructura dentro de gns3:**  
 ![alt](./img/0.png)
+
 Hay que tener en cuenta que los servidores tienes las siguientes ip:
 **Nginx_balanceador:** 192.168.0.2
 **Nginx_servidor1:** 192.168.0.3
