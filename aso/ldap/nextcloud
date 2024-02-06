@@ -1,0 +1,8 @@
+1. Iniciar servidor MariaDB:
+service MariaDB start
+
+2. Contraseña del nextcloud (base de datos):
+YourStrongPasswordHere
+
+3. Contraseña de admin:
+patata

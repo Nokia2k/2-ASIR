@@ -1,0 +1,20 @@
+1. Crear el servidor: 
+docker run -it --name=ubu-server -p 8888:80 --network ldap ldapsrv:1.2 /bin/bash
+1.2 Con un volumen:
+docker run -it --name=ubu-server -p 8888:80 --network ldap --mount source=ldap_server,target=/mnt/nextcloud ldapsrv:1.2 /bin/bash
+
+2. Iniciar los servicios apache2 y sldapd
+service apache2 start
+service slapd start
+
+3. Iniciar sesion con el usuario admin
+Contraseña: patata
+
+4. Crear el cliente:
+docker run -it --name=ubu-cliente -p 8008:80 --network ldap ldapcli:1.1 /bin/bash
+
+5. Iniciar nscd y sssd
+service nscd start
+service sssd start (si da fail no pasa nada, se usara el nscd en vez de sssd)
+
+
