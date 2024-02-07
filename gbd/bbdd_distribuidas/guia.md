@@ -123,51 +123,112 @@ PARTITION BY RANGE (NIA) (
     PARTITION particion_3 VALUES LESS THAN (MAXVALUE) TABLESPACE TS_PARTICION3 
 );  
 ```
-La tabla alumnos_adrian:
-```bash
-CREATE TABLE ALUMNOS_adrian ( 
-
-    NIA NUMBER(8) PRIMARY KEY, 
-    dni VARCHAR2(9) , 
-    nombre VARCHAR2(20),  
-    ciudad VARCHAR2(15) DEFAULT 'Valencia',  
-    telefono NUMBER(9),  
-    ciclo VARCHAR2(10),  
-    nota NUMBER(2,1) 
-    
-)  TABLESPACE TS_AUSIAS;
-```
-La tabla alumnos_david:
-```bash
-CREATE TABLE ALUMNOS_david ( 
-
-    NIA NUMBER(8) PRIMARY KEY, 
-    dni VARCHAR2(9) , 
-    nombre VARCHAR2(20),  
-    ciudad VARCHAR2(15) DEFAULT 'Valencia',  
-    telefono NUMBER(9),  
-    ciclo VARCHAR2(10),  
-    nota NUMBER(2,1) 
-    
-)  TABLESPACE TS_JAUME;
-```
-La tabla alumnos_jose:
-```bash
-CREATE TABLE ALUMNOS_jose ( 
-
-    NIA NUMBER(8) PRIMARY KEY, 
-    dni VARCHAR2(9) , 
-    nombre VARCHAR2(20),  
-    ciudad VARCHAR2(15) DEFAULT 'Valencia',  
-    telefono NUMBER(9),  
-    ciclo VARCHAR2(10),  
-    nota NUMBER(2,1) 
-    
-)  TABLESPACE TS_ENRIC;
-```
-
 
 ## Paso 4
+Creamos los db_links para poder conectarnos a las demas bases de datos, la sintaxis sera la siguiente:
+
+Conexion con adrian:
+```bash
+CREATE DATABASE LINK viktor_to_adrian 
+CONNECT TO VIKTOR 
+IDENTIFIED BY "12345" 
+USING ' 
+(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP) 
+(HOST=192.168.2.221)(PORT=1521)) 
+(CONNECT_DATA=(SERVER=DEDICATED) 
+(SERVICE_NAME=XE)))'; 
+```
+
+Conexion con jose:
+```bash
+CREATE DATABASE LINK viktor_to_jose 
+CONNECT TO VIKTOR 
+IDENTIFIED BY "12345" 
+USING ' 
+(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP) 
+(HOST=192.168.2.225)(PORT=1521)) 
+(CONNECT_DATA=(SERVER=DEDICATED) 
+(SERVICE_NAME=XE)))'; 
+```
+
+Conexion con david:
+```bash
+CREATE DATABASE LINK viktor_to_david 
+CONNECT TO VIKTOR 
+IDENTIFIED BY "12345" 
+USING ' 
+(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP) 
+(HOST=192.168.2.223)(PORT=1521)) 
+(CONNECT_DATA=(SERVER=DEDICATED) 
+(SERVICE_NAME=XE)))'; 
+```
+Ahora nos conectaremos de manera grafica a la base de datos de cada uno:
+
+![alt](./img/2.png)
+
+Y una vez comprobado esto, creamos una conexion a cada uno de las bases de datos de los demas:
+
+![alt](./img/3.png)
+
+En cada una de las conexiones creamos la tabla de alumnos donde el administrador de cada base de datos nos ha otorgado permisos para crear la tabla, para que los demas puedan hacer lo mismo le otorgaremos tambien permisos de creacion, que, cuando la hayan creado se los revocaremos por seguridad, para ello:
+```bash
+GRANT CREATE TABLE TO jose; 
+GRANT CREATE TABLE TO adrian;
+GRANT CREATE TABLE TO david;
+```
+
+La base de datos de adrian:
+```bash
+CREATE TABLE ALUMNOS_VIKTOR ( 
+
+    NIA NUMBER(8) PRIMARY KEY, 
+    dni VARCHAR2(9) , 
+    nombre VARCHAR2(20),  
+    ciudad VARCHAR2(15) DEFAULT 'Valencia',  
+    telefono NUMBER(9),  
+    ciclo VARCHAR2(10),  
+    nota NUMBER(2,1) 
+    
+)  TABLESPACE TS_VIKTOR;
+```
+La base de datos de jose:
+```bash
+CREATE TABLE ALUMNOS_VIKTOR ( 
+
+    NIA NUMBER(8) PRIMARY KEY, 
+    dni VARCHAR2(9) , 
+    nombre VARCHAR2(20),  
+    ciudad VARCHAR2(15) DEFAULT 'Valencia',  
+    telefono NUMBER(9),  
+    ciclo VARCHAR2(10),  
+    nota NUMBER(2,1) 
+    
+)  TABLESPACE TS_LLUIS;
+```
+
+La base de datos de david:
+```bash
+CREATE TABLE ALUMNOS_VIKTOR ( 
+
+    NIA NUMBER(8) PRIMARY KEY, 
+    dni VARCHAR2(9) , 
+    nombre VARCHAR2(20),  
+    ciudad VARCHAR2(15) DEFAULT 'Valencia',  
+    telefono NUMBER(9),  
+    ciclo VARCHAR2(10),  
+    nota NUMBER(2,1) 
+    
+)  TABLESPACE TS_VIKTOR;
+```
+
+Y despues de que hayan creado las tablas:
+```bash
+REVOKE CREATE TABLE FROM jose; 
+REVOKE CREATE TABLE FROM adrian;
+REVOKE CREATE TABLE FROM david;
+```
+
+## Paso 5
 A continuacion toca dar los permisos necesarios a todos los usuarios
 
 Los permisos de Adrian:
@@ -200,81 +261,5 @@ GRANT UPDATE ANY TABLE TO viktor;
 GRANT INSERT ANY TABLE TO viktor; 
 ```
 
-## Paso 5
-Comprobaremos que podemos entrar con los usuarios, si podemos con uno podremos con todos:
-
-**Insertar una imagen de que se pueda conectar el usuario 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-CREATE TABLE ALUMNOS (   
-
-    dni VARCHAR2(9) PRIMARY KEY,   
-    nombre VARCHAR2(20),   
-    ciudad VARCHAR2(15) DEFAULT 'Valencia',   
-    telefono NUMBER(9),   
-    ciclo VARCHAR2(10),   
-    nota NUMBER(2,1),   
-    id_alumno NUMBER(10)   
-)  
-
-PARTITION BY RANGE (id_alumno) (   
-
-    PARTITION particion_1 VALUES LESS THAN (12) TABLESPACE TS_AUSIAS,  
-    PARTITION particion_2 VALUES LESS THAN (24) TABLESPACE TS_ENRIC,   
-    PARTITION particion_3 VALUES LESS THAN (MAXVALUE) TABLESPACE TS_LLUIS 
-); 
-
-
-
-
-
+## Paso 6
+AQUI TOCA HACER EL TRIGGER
