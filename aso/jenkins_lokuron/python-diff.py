@@ -94,7 +94,7 @@ def modificaciones():
                     meta_script.write("\n# " + ws_hoy.cell(row=fila_hoy_procesada,column=2).value + " ha cambiado :\n")
                     for campoCambiado in range(0,len(vCambiosUsuario)):
                         auxC = int(vCambiosUsuario[campoCambiado])+2
-                        print("  --->   "+vCampos[vCambiosUsuario[campoCambiado]]+" : "+ ws_hoy.cell(row=fila_hoy_procesada,column=auxC).value)
+                        print("  --->   "+vCampos[vCambiosUsuario[campoCambiado]]+" : "+ str(ws_hoy.cell(row=fila_hoy_procesada,column=auxC).value))
                         if vCampos[vCambiosUsuario[campoCambiado]] == "login" :
                             meta_script.write("# EL LOGIN:\n")
                             meta_script.write("usermod -l " + ws_ayer.cell(row=fila_hoy_procesada,column=2).value + " " + ws_hoy.cell(row=fila_hoy_procesada,column=2).value + "\n")
