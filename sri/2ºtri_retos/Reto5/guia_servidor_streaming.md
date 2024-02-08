@@ -1,11 +1,14 @@
-# Reto4
+# Reto5
+
 *Victor Martinez Martinez*
 
 Servidor Streaming (Con nginx en EC2)
----
+-------------------------------------
 
 ## Paso 1
-**Lo primero que haremos sera copiar las siguientes lineas de configuracion dentro del archivo nginx.conf:**  
+
+**Lo primero que haremos sera copiar las siguientes lineas de configuracion dentro del archivo nginx.conf:**
+
 ```bash
 rtmp {
     server {
@@ -17,15 +20,19 @@ rtmp {
     }
 }
 ```
+
 ![alt](./img/1.png)
 
 ## Paso 2
 
 **Comprobaremos que todo esta bien escrito con el comando:**
+
 ```bash
 sudo nginx -t
 ```
+
 La salida sera algo como esto:
+
 ```bash
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
@@ -38,6 +45,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```bash
 sudo systemctl restart nginx
 ```
+
 podemos usar tambien **sudo systemctl status nginx** en le caso de que falle para saber que ha pasado
 ![alt](./img/2.png)
 
@@ -53,19 +61,10 @@ Una vez hecho esto, aplicamos los cambios, los aceptamos y empezamos a retransmi
 ![alt](./img/4.png)
 
 ## Paso 5
+
 **Para comprobar el cliente usaremos el programa vlc**
 Para conectarnos al servidor y ver el directo tendremos que ir a medio -> abrir ubicacion de red -> introducir una url, tendremos que poner la del servidor junto con la clave que hemos indicado antes en el obs:
 ![alt](./img/5.png)
 
 Y podremos observar que la retransmision fuciona:
 ![alt](./img/6.png)
-
----
-
-### Paso extra
-
-Si quisieramos ver el directo en **html** tendriamos que hacer los siguiente:
-
-```bash
-docker-compose run --rm certbot renew
-```

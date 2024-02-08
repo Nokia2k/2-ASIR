@@ -296,7 +296,7 @@ GRANT UPDATE ANY TABLE TO viktor;
 GRANT INSERT ANY TABLE TO viktor; 
 ```
 
-Para que los otros usuarios puedan ver las tablas que han creado hay que ir a la ruta: C:\app\\viktorproduct\21c\homes\OraDB21Home1\network\admin y en el archivo **TAL** cambiar en la linea **TAL** **NTC** por **NONE** y reiniciaremos el servicio o la maquina.
+Para que los otros usuarios puedan ver las tablas que han creado hay que ir a la ruta: C:\app\\viktorproduct\21c\homes\OraDB21Home1\network\admin y en el archivo **TAL** cambiar en la linea **TAL** **NTS** por **NONE** y reiniciaremos el servicio o la maquina.
 
 ## Paso 6
 
