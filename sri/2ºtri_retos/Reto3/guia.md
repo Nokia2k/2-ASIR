@@ -1,12 +1,14 @@
-# Reto2
+# Reto3
+
 *Victor Martinez Martinez*
 
 WEBDAV (con SSL)
----
+----------------
 
 ## Paso 1
 
 **Crearemos un directorio para guardar todos los documentos. En mi caso la ruta sera la siguiente:**
+
 ```bash
 mkdir /var/www/viktor/webdav
 ```
@@ -46,7 +48,7 @@ DavLockDB /tmp/DavLock
 
 Las directivas como **AuthUserFile** o **AuthName** tendras que cambiarlas y poner las tuyas propias
 
-## Parte 5t
+## Parte 5
 
 Una vez hecho esto lo ultimo que queda es conectarse por medio de nuestro explorador de archivos y comprobar que todo funciona correctamente:
 
@@ -63,4 +65,3 @@ Y podemos obrservar que podemos crear archivos y carpetas:
 Y si observamos en el servidor vemos que efectivamente se han creado:
 
 ![alt](./img/1.png)
-
