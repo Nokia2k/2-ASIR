@@ -6,9 +6,7 @@
 # Orig users-240122.xlsx
 # Dest users-240123.xlsx
 
-
 # DESPIDOS PROCEDENTES :  
-
 # Deleting Cesar Tomas
 deluser csueca
 
