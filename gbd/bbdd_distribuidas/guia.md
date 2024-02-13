@@ -14,7 +14,7 @@ Creamos lo primero los tablespaces de cada uno de los institutos y de las partic
 
 El tablespace de Adrian:
 
-```bash
+```sql
 CREATE TABLESPACE ts_ausias
 DATAFILE 'C:\app\viktor\product\21c\ausias.dbf' SIZE 100M 
 EXTENT MANAGEMENT LOCAL 
@@ -23,7 +23,7 @@ SEGMENT SPACE MANAGEMENT AUTO;
 
 El tablespace de David:
 
-```bash
+```sql
 CREATE TABLESPACE ts_jaume 
 DATAFILE 'C:\app\viktor\product\21c\jaume.dbf' SIZE 100M 
 EXTENT MANAGEMENT LOCAL 
@@ -32,7 +32,7 @@ SEGMENT SPACE MANAGEMENT AUTO;
 
 El tablespace de Jose:
 
-```bash
+```sql
 CREATE TABLESPACE ts_enric
 DATAFILE 'C:\app\viktor\product\21c\enric.dbf' SIZE 100M 
 EXTENT MANAGEMENT LOCAL 
@@ -41,7 +41,7 @@ SEGMENT SPACE MANAGEMENT AUTO;
 
 El tablespace de Viktor:
 
-```bash
+```sql
 CREATE TABLESPACE ts_lluis
 DATAFILE 'C:\app\viktor\product\21c\lluis.dbf' SIZE 100M 
 EXTENT MANAGEMENT LOCAL 
@@ -50,7 +50,7 @@ SEGMENT SPACE MANAGEMENT AUTO;
 
 El tablespace de la particion 1:
 
-```bash
+```sql
 CREATE TABLESPACE ts_particion1
 DATAFILE 'C:\app\viktor\product\21c\particion1.dbf' SIZE 100M 
 EXTENT MANAGEMENT LOCAL 
@@ -59,7 +59,7 @@ SEGMENT SPACE MANAGEMENT AUTO;
 
 El tablespace de la particion 2:
 
-```bash
+```sql
 CREATE TABLESPACE ts_particion2
 DATAFILE 'C:\app\viktor\product\21c\particion2.dbf' SIZE 100M 
 EXTENT MANAGEMENT LOCAL 
@@ -68,7 +68,7 @@ SEGMENT SPACE MANAGEMENT AUTO;
 
 El tablespace de la particion 3:
 
-```bash
+```sql
 CREATE TABLESPACE ts_particion3
 DATAFILE 'C:\app\viktor\product\21c\particion3.dbf' SIZE 100M 
 EXTENT MANAGEMENT LOCAL 
@@ -83,7 +83,7 @@ Ahora crearemos todos los usuarios con sus respectibas tablespaces
 
 El usuario de Adrian:
 
-```bash
+```sql
 CREATE USER adrian IDENTIFIED BY 12345 
 DEFAULT TABLESPACE ts_ausias
 TEMPORARY TABLESPACE TEMP 
@@ -92,7 +92,7 @@ QUOTA 70M ON ts_ausias;
 
 El usuario de David:
 
-```bash
+```sql
 CREATE USER david IDENTIFIED BY 12345 
 DEFAULT TABLESPACE ts_jaume
 TEMPORARY TABLESPACE TEMP 
@@ -101,7 +101,7 @@ QUOTA 70M ON ts_jaume;
 
 El usuario de Jose:
 
-```bash
+```sql
 CREATE USER jose IDENTIFIED BY 12345 
 DEFAULT TABLESPACE ts_enric
 TEMPORARY TABLESPACE TEMP 
@@ -110,7 +110,7 @@ QUOTA 70M ON ts_enric;
 
 El usuario de Viktor:
 
-```bash
+```sql
 CREATE USER viktor IDENTIFIED BY 12345 
 DEFAULT TABLESPACE ts_lluis
 TEMPORARY TABLESPACE TEMP 
@@ -123,7 +123,7 @@ Ahora toca crear las tablas:
 
 La tabla alumnos:
 
-```bash
+```sql
 CREATE TABLE ALUMNOS ( 
     NIA NUMBER(8) PRIMARY KEY, 
     dni VARCHAR2(9) , 
@@ -147,7 +147,7 @@ Creamos los db_links para poder conectarnos a las demas bases de datos, la sinta
 
 Conexion con adrian:
 
-```bash
+```sql
 CREATE DATABASE LINK viktor_to_adrian 
 CONNECT TO VIKTOR 
 IDENTIFIED BY "12345" 
@@ -160,7 +160,7 @@ USING '
 
 Conexion con jose:
 
-```bash
+```sql
 CREATE DATABASE LINK viktor_to_jose 
 CONNECT TO VIKTOR 
 IDENTIFIED BY "12345" 
@@ -173,7 +173,7 @@ USING '
 
 Conexion con david:
 
-```bash
+```sql
 CREATE DATABASE LINK viktor_to_david 
 CONNECT TO VIKTOR 
 IDENTIFIED BY "12345" 
@@ -194,7 +194,7 @@ Y una vez comprobado esto, creamos una conexion a cada uno de las bases de datos
 
 En cada una de las conexiones creamos la tabla de alumnos donde el administrador de cada base de datos nos ha otorgado permisos para crear la tabla, para que los demas puedan hacer lo mismo le otorgaremos tambien permisos de creacion, que, cuando la hayan creado se los revocaremos por seguridad, para ello:
 
-```bash
+```sql
 GRANT CREATE TABLE TO jose; 
 GRANT CREATE TABLE TO adrian;
 GRANT CREATE TABLE TO david;
@@ -202,7 +202,7 @@ GRANT CREATE TABLE TO david;
 
 La base de datos de adrian:
 
-```bash
+```sql
 CREATE TABLE ALUMNOS_VIKTOR ( 
 
     NIA NUMBER(8) PRIMARY KEY, 
@@ -218,7 +218,7 @@ CREATE TABLE ALUMNOS_VIKTOR (
 
 La base de datos de jose:
 
-```bash
+```sql
 CREATE TABLE ALUMNOS_VIKTOR ( 
 
     NIA NUMBER(8) PRIMARY KEY, 
@@ -234,7 +234,7 @@ CREATE TABLE ALUMNOS_VIKTOR (
 
 La base de datos de david:
 
-```bash
+```sql
 CREATE TABLE ALUMNOS_VIKTOR ( 
 
     NIA NUMBER(8) PRIMARY KEY, 
@@ -250,7 +250,7 @@ CREATE TABLE ALUMNOS_VIKTOR (
 
 Y despues de que hayan creado las tablas:
 
-```bash
+```sql
 REVOKE CREATE TABLE FROM jose; 
 REVOKE CREATE TABLE FROM adrian;
 REVOKE CREATE TABLE FROM david;
@@ -262,7 +262,7 @@ A continuacion toca dar los permisos necesarios a todos los usuarios
 
 Los permisos de Adrian:
 
-```bash
+```sql
 GRANT CREATE SESSION TO adrian; 
 GRANT CONNECT TO adrian; 
 GRANT SELECT, DELETE, UPDATE, INSERT ON alumnos_adrian TO adrian;   
@@ -270,7 +270,7 @@ GRANT SELECT, DELETE, UPDATE, INSERT ON alumnos_adrian TO adrian;
 
 Los permisos de David:
 
-```bash
+```sql
 GRANT CREATE SESSION TO david; 
 GRANT CONNECT TO david; 
 GRANT SELECT, DELETE, UPDATE, INSERT ON alumnos_david TO david; 
@@ -278,7 +278,7 @@ GRANT SELECT, DELETE, UPDATE, INSERT ON alumnos_david TO david;
 
 Los permisos de Jose:
 
-```bash
+```sql
 GRANT CREATE SESSION TO jose; 
 GRANT CONNECT TO jose; 
 GRANT SELECT, DELETE, UPDATE, INSERT ON alumnos_jose TO jose; 
@@ -286,7 +286,7 @@ GRANT SELECT, DELETE, UPDATE, INSERT ON alumnos_jose TO jose;
 
 Los permisos de Viktor:
 
-```bash
+```sql
 GRANT CREATE SESSION TO viktor; 
 GRANT CONNECT TO viktor; 
 GRANT CREATE ANY TABLE TO viktor;
@@ -296,8 +296,123 @@ GRANT UPDATE ANY TABLE TO viktor;
 GRANT INSERT ANY TABLE TO viktor; 
 ```
 
-Para que los otros usuarios puedan ver las tablas que han creado hay que ir a la ruta: C:\app\\viktorproduct\21c\homes\OraDB21Home1\network\admin y en el archivo **TAL** cambiar en la linea **TAL** **NTS** por **NONE** y reiniciaremos el servicio o la maquina.
+Para que los otros usuarios puedan ver las tablas que han creado hay que ir a la ruta: C:\app\\viktorproduct\21c\homes\OraDB21Home1\network\admin y en el archivo **sqlnet** cambiar en la linea **SQLNET.AUTHENTICATION_SERVICES= (NTS)** por **SQLNET.AUTHENTICATION_SERVICES= (NONE)** y reiniciaremos el servicio o la maquina.
 
 ## Paso 6
 
-AQUI TOCA HACER EL TRIGGER
+A continuacion crearemos 3 triggers, uno para las inserciones, otro para las actualizaciones y otro para los borrados:
+
+
+**Trigger de inserciones:**
+
+```sql
+CREATE OR REPLACE TRIGGER INSERCIONES  
+AFTER INSERT ON ALUMNOS  
+FOR EACH ROW  
+BEGIN  
+    IF :new.NIA < 20000000 THEN  
+       INSERT INTO ALUMNOS_VIKTOR@viktor_to_adrian  
+       VALUES (:new.NIA, :new.dni, :new.nombre, :new.ciudad, :new.telefono, :new.ciclo, :new.nota);  
+    ELSIF :new.NIA < 40000000 THEN   
+        INSERT INTO ALUMNOS_VIKTOR@viktor_to_david  
+        VALUES (:new.NIA, :new.dni, :new.nombre, :new.ciudad, :new.telefono, :new.ciclo, :new.nota);  
+    ELSE   
+        INSERT INTO ALUMNOS_VIKTOR@viktor_to_jose 
+        VALUES (:new.NIA, :new.dni, :new.nombre, :new.ciudad, :new.telefono, :new.ciclo, :new.nota);  
+    END IF;  
+END; 
+COMMIT;
+```
+
+Ahora para comprobar que funciona, insertaremos un alumno en mi tabla y el trigger deberia encargase de crear el alumno tambien en la base de datos de adrian:
+
+**Tabla de mi base de datos:**
+
+![imagen](./img/mitablaI.png)
+
+**Tabla de la base de datos de adrian:**
+
+![imagen](./img/sutablaI.png)
+
+**Trigger de actualizaciones:**
+
+```sql
+CREATE OR REPLACE TRIGGER ACTUALIZACIONES  
+AFTER UPDATE ON ALUMNOS  
+FOR EACH ROW  
+BEGIN  
+    IF :new.NIA < 20000000 THEN  
+       UPDATE ALUMNOS_VIKTOR@viktor_to_adrian SET  
+       NIA = :new.NIA,  
+       dni = :new.dni,  
+       nombre = :new.nombre,  
+       ciudad = :new.ciudad,  
+       telefono = :new.telefono,  
+       ciclo = :new.ciclo, 
+       nota = :new.nota  
+       WHERE NIA = :new.NIA;  
+   ELSIF :new.NIA < 40000000 THEN   
+    UPDATE ALUMNOS_VIKTOR@viktor_to_david SET  
+       NIA = :new.NIA,  
+       dni = :new.dni,  
+       nombre = :new.nombre,  
+       ciudad = :new.ciudad,  
+       telefono = :new.telefono,  
+       ciclo = :new.ciclo, 
+       nota = :new.nota  
+       WHERE NIA = :new.NIA;  
+    ELSE  
+        UPDATE ALUMNOS_VIKTOR@viktor_to_jose SET  
+       NIA = :new.NIA,  
+       dni = :new.dni,  
+       nombre = :new.nombre,  
+       ciudad = :new.ciudad,  
+       telefono = :new.telefono,  
+       ciclo = :new.ciclo,  
+       nota = :new.nota  
+       WHERE NIA = :new.NIA;  
+    END IF; 
+   NULL;  
+END; 
+COMMIT;
+```
+
+Ahora para comprobar que funciona, modificaremos un alumno en mi tabla y el trigger deberia encargase de modificar el alumno tambien en la base de datos de adrian:
+
+**Tabla de mi base de datos:**
+
+![imagen](./img/mitablaM.png)
+
+**Tabla de la base de datos de adrian:**
+
+![imagen](./img/sutablaM.png)
+
+**Trigger de borrados:**
+
+```sql
+CREATE OR REPLACE TRIGGER borrados
+AFTER DELETE ON ALUMNOS  
+FOR EACH ROW  
+BEGIN  
+    IF :old.NIA < 20000000 THEN  
+        DELETE ALUMNOS_VIKTOR@viktor_to_adrian WHERE NIA=:old.NIA;  
+    ELSIF :old.NIA < 40000000 THEN  
+            DELETE ALUMNOS_VIKTOR@viktor_to_david WHERE NIA=:old.NIA;  
+    ELSE  
+            DELETE ALUMNOS_VIKTOR@viktor_to_jose WHERE NIA=:old.NIA;  
+    END IF; 
+NULL;  
+END;  
+COMMIT;
+
+```
+
+Ahora para comprobar que funciona, borraremos un alumno en mi tabla y el trigger deberia encargase de borrar el alumno tambien en la base de datos de adrian:
+
+**Tabla de mi base de datos:**
+
+![imagen](./img/mitablaB.png)
+
+**Tabla de la base de datos de adrian:**
+
+![imagen](./img/mitablaB.png)
