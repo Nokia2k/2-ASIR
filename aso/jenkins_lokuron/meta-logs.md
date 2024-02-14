@@ -5,18 +5,18 @@
 
 ---
 #### REFERENCED FILES:
-**Orig: users-240122.xlsx**
-**Dest: users-240123.xlsx**
+**Orig:** users-240122.xlsx
+**Dest:** users-240123.xlsx
 
 ---
 
 ### DESPIDOS PROCEDENTES:  
-**Empleado despedido: Cesar Tomas**
+**Empleado despedido:** Cesar Tomas
 Codigo generado:
 ```bash
 deluser csueca
 ```
-**Empleado despedido: Angel Diseño**
+**Empleado despedido:** Angel Diseño
 Codigo generado:
 ```bash
 deluser aberlanas
@@ -24,7 +24,7 @@ deluser aberlanas
 ---
 
 ### NUEVOS CONTRATOS: 
-**Nuevo empleado contratado: Jose Guesser**
+**Nuevo empleado contratado:** Jose Guesser
 Codigo generado:
 ```bash
 useradd -m -d "/home/jguesseado" -s "/bin/bash" -u 5004 -c "Jose Guesser, ,123554422, ,timeguesser@champion.co.uk" "jguesseado"
@@ -34,14 +34,14 @@ echo "jguesseado:123554422"| chpasswd
 
 ### MODIFICACIONES DE LOS EMPLEADOS: 
 
-#### apepino ha cambiado :
+#### apepino ha cambiado:
 **El nombre de usuario**
 Codigo generado:
 ```bash
 chfn -f "Adrian Largo" apepino
 ```
 
-#### lautarino ha cambiado :
+#### lautarino ha cambiado:
 **El login de usuario**
 Codigo generado:
 ```bash
@@ -63,14 +63,14 @@ Codigo generado:
 usermod -c sexsymbol@argentina.ar lautarino
 ```
 
-#### vthin ha cambiado :
+#### vthin ha cambiado:
 **El nombre de usuario**
 Codigo generado:
 ```bash
 chfn -f "Viktor Thonk" vthin
 ```
 
-#### jmarchante ha cambiado :
+#### jmarchante ha cambiado:
 **El telefono del usuario**
 Codigo generado:
 ```bash
