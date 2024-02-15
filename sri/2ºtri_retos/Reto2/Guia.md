@@ -1,68 +1,108 @@
 # Reto2
+
 *Victor Martinez Martinez*
 
 VSFTPD
----
+------
 
 ## Paso 1
 
-**Crearemos una pgaina web para una empresa ficticia que alojaremos en la siguiente ruta:.**
+**Lo primero instalaremos el servicio:**
+
 ```bash
-    mkdir /var/www/empresa
+sudo apt install vsftpd
 ```
 
 ## Parte 2
 
-**A continuacion hay que crear el sitio del servidor web en el servicio apache:**
+**En /etc/vsftpd.conf las lineas que usaremos seran las siguientes:**
 
 ```bash
-    cp /etc/apache2/sites-avalible/000-default.conf 
-    /etc/apache2/sites-avalible/empresa.conf
+listen=YES
+listen_ipv6=NO
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+dirmessage_enable=YES
+use_localtime=YES
+xferlog_enable=YES
+ascii_upload_enable=yes
+ascii_download_enable=YES
+chroot_local_user=YES
+secure_chroot_dir=/var/run/vsftpd/empty
+pam_service_name=vsftpd
+ssl_enable=YES
+rsa_cert_file=/etc/letsencrypt/live/viktoor2k.ddns.net/fullchain.pem
+rsa_private_key_file=/etc/letsencrypt/live/viktoor2k.ddns.net/privkey.pem
+
+allow_anon_ssl=NO
+force_local_data_ssl=YES
+force_local_logins_ssl=YES
+
+ssl_tlsv1=YES
+ssl_sslv2=NO
+ssl_sslv3=NO
+
+require_ssl_reuse=NO
+ssl_ciphers=HIGH
+
+
+force_local_data_ssl=YES
+force_local_logins_ssl=YES
+ssl_ciphers=HIGH
+require_ssl_reuse=NO
+
+user_sub_token=$USER
+local_root=/home/$USER/public_html
+allow_writeable_chroot=YES
+
+pasv_enable=yes
+pasv_min_port=40000
+pasv_max_port=50000
+pasv_addr_resolve=YES
 ```
-Dentro de este archivo tendremos que añadir las siguientes lineas:
+
+Ahora crearemos un usuario:
 
 ```bash
-  DocumentRoot /var/www/empresa
-  ServerName www.empresa-ficticia.com
-
+adduser usuario1
 ```
+
+su contraseña sera **usuario1**
 
 ## Parte 3
 
-**Si quisieramos tener dentro de la web de la empresa reservada con cierta seguridad tendriamos que hacer unas modificaciones dentro del archivo**
+Nos loguearemos en el usuario **usuario1** usando el comando **su**
 
-Primero vamos a crear un subdirectorio dentro del directorio raiz de la pagina de la empresa:
-
-```bash
-  cd /var/www/empresa
-  mkdir admin
-  cd admin
-  touch index.html
-```
-Para añadir reglas de autenticacion primero tenemos que habilitar el modulo **auth_digest**
+Y dentro de este crearemos la carpeta public_html:
 
 ```bash
-  a2enmod auth_digest
-  systemctl restart apache2
+su usuario1
+cd $HOME
+mkdir public_html
 ```
 
-Y despues incluimos la siguiente configuracion en el sitio de la empresa
-
+Y crearemos un par de archivos para comprobar mas tarde su funcionamiento
 
 ```bash
-  <Directory "/var/www/empresa/admin">
-    AuthType Digest
-    AuthName "dominio"
-    AuthUserFile "/etc/claves/digest.txt"
-    Require valid-user
-  </Directory>
+echo "hola" > index.html
 ```
 
-Y añadimos los usuarios 
+ahora con el filezilla introduciremos las credenciales para poder conectarnos al servidor ftp:
+
+![alt](./img/1.png)
+
+si tuvieramos el servicio de dns activo en vez de colocar la ip pondriamos el nombre del domino y listo
+
+le inidicaremos la contraseña y nos conectaremos al servidor
+
+Una vez que le demos a conectar veremos que aparece el archivo que le hemos indicado antes:
+
+![alt](./img/2.png)
+
+Asi de esta manera ademas el usuario ya tiene su propio espacio restringido y seguro
+
+ahora si vamos al navegador y le indicamos **100.24.206.246/~usuario1** veremos que el archivo index.html aparece en el navegador:
 
 
-Para comprbar los puertos que hay abiertos en la maquina donde hemos borrado todas las tablas bastara con usar el comando nmap con los sigiuentes paraemtros:
-
-```bash
-    nmap -p 1-1024 192.168.2.22
-```
+![alt](./img/3.png)
