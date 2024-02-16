@@ -46,7 +46,6 @@ Lo primero que haremos sera ir a **Panel de control -> Administrar Jenkins -> Sy
 
 ![alt](./img/2.png)
 
-
 ### Paso 4
 
 Ahora nos toca crear el nodo que se comunicara con el contenedor de jenkins, para ello iremos a **Panel de control -> Administrar Jenkins -> Nodes** en este menu crearemos un nodo:
@@ -71,19 +70,4 @@ Los usuarios que hay que crear son los siguientes:
 
 ![alt](./img/5.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Paso 3
-
-Crearemos la tarea que hara que jenkins se descargue el repositorio con los archivos xlsx y el script de python y lo copiaremos en la carpeta compartida
+ACORDARSE DE INICIAR EL .JAR EN /SRV PARA EL TEMA DEL NODO
